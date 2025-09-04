@@ -1,0 +1,186 @@
+{% extends 'basic.html' %}
+
+
+{% block headTitle %} Товары {% endblock headTitle %}
+
+
+{% block bodyAttr %}
+    data-menu-color="dark"
+    data-sidebar="default"
+{% endblock bodyAttr %}
+
+
+{% block beginPage %}
+    <!-- Begin page -->
+    <div id="app-layout">
+        
+        {% include 'topbar-leftMenu.html' %}
+
+
+        <div class="content-page">
+            <div class="content">
+
+                <!-- Start Content-->
+                <div class="container-xxl">
+                    <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
+                        <div class="flex-grow-1">
+                            <h4 class="fs-18 fw-semibold m-0"> Товары </h4>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card btn-panel width-100p">
+                                
+                                <div class="card-body d-flex width-100p">
+                                    <div class="d-flex flex-wrap gap-2 width-100p">
+                                        <a href="{{ url_for('products.add_product_category', category_id=0) }}">
+                                            <button type="button" class="btn btn-success">Добавить категорию</button>
+                                        </a>
+                                        <a href="{{ url_for('products.main') }}">
+                                            <button type="button" class="btn btn-primary">Товары</button>
+                                        </a>
+                                        <a href="#">
+                                            <button type="button" class="btn btn-primary" disabled="">Категории</button>
+                                        </a>
+                                    </div>
+    
+                                    <div class="filter-btn-wrapper">
+                                        <form action="" class="btn-panel-search-form">
+                                            <div>
+                                                <input type="text" id="search-input" class="form-control" placeholder="Поиск">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div> <!-- end card-body -->
+    
+                            </div> <!-- end card-->
+                        </div>
+                    </div>
+
+                    <!-- start row -->
+                    <div class="row">
+                        
+                        <div class="col-12">
+                            <div id="categories-list" class="items-block cards-wrapper row row-cols-1 row-cols-md-2 row-cols-xl-4">
+                                
+                                {% for category in categories %}
+                                <div class="col list-item" data-id="{{ category.id }}">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            
+                                            <div class="card-title-wrapper">
+                                                <h5 class="card-title"> {{ category.name }} </h5>
+                                                
+                                                <div class="dots-btn-wrapper">
+                                                    <a href="#" class="dots-btn">
+                                                        <svg width="5" height="19" viewBox="0 0 5 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <rect width="5" height="5" rx="2.5" fill="#4A5A6B"/>
+                                                            <rect y="7" width="5" height="5" rx="2.5" fill="#4A5A6B"/>
+                                                            <rect y="14" width="5" height="5" rx="2.5" fill="#4A5A6B"/>
+                                                        </svg>
+                                                    </a>
+
+                                                    <div class="dropdown-menu dropdown-menu-end dots-btn-dropdown" data-popper-placement="bottom-end" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(-15px, 0px);">
+
+                                                        <!-- item-->
+                                                        <a href="{{ url_for('products.add_product_category', category_id=category.id) }}" class="dropdown-item notify-item">
+                                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M7.33334 2.66675H2.66667C2.31305 2.66675 1.97391 2.80722 1.72386 3.05727C1.47381 3.30732 1.33334 3.64646 1.33334 4.00008V13.3334C1.33334 13.687 1.47381 14.0262 1.72386 14.2762C1.97391 14.5263 2.31305 14.6667 2.66667 14.6667H12C12.3536 14.6667 12.6928 14.5263 12.9428 14.2762C13.1929 14.0262 13.3333 13.687 13.3333 13.3334V8.66675" stroke="#4A5A6B" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                <path d="M12.3333 1.66665C12.5986 1.40144 12.9583 1.25244 13.3333 1.25244C13.7084 1.25244 14.0681 1.40144 14.3333 1.66665C14.5986 1.93187 14.7475 2.29158 14.7475 2.66665C14.7475 3.04173 14.5986 3.40144 14.3333 3.66665L8 9.99999L5.33334 10.6667L6 7.99999L12.3333 1.66665Z" stroke="#4A5A6B" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                                                            </svg>
+                                                            <span>Редактировать</span>
+                                                        </a>
+
+                                                        <!-- item-->
+                                                        <a href="#" class="remove-category-btn dropdown-item notify-item"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#staticBackdrop"
+                                                            data-id="{{ category.id }}"    
+                                                            data-socket-name="remove-category"    
+                                                        >
+                                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M2 4H3.33333H14" stroke="#4A5A6B" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                <path d="M12.6667 3.99992V13.3333C12.6667 13.6869 12.5262 14.026 12.2761 14.2761C12.0261 14.5261 11.687 14.6666 11.3333 14.6666H4.66667C4.31304 14.6666 3.9739 14.5261 3.72386 14.2761C3.47381 14.026 3.33333 13.6869 3.33333 13.3333V3.99992M5.33333 3.99992V2.66659C5.33333 2.31296 5.47381 1.97382 5.72386 1.72378C5.97391 1.47373 6.31304 1.33325 6.66667 1.33325H9.33333C9.68695 1.33325 10.0261 1.47373 10.2761 1.72378C10.5262 1.97382 10.6667 2.31296 10.6667 2.66659V3.99992" stroke="#4A5A6B" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                <path d="M6.66667 7.33325V11.3333" stroke="#4A5A6B" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                <path d="M9.33333 7.33325V11.3333" stroke="#4A5A6B" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                                                            </svg>
+                                                            <span>Удалить</span>
+                                                        </a>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <!-- container-fluid -->
+                 
+            </div> 
+            <!-- content -->
+
+            <!-- Footer Start -->
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col fs-13 text-muted text-center footer-mini-text">
+                            &copy; <script>document.write(new Date().getFullYear())</script>
+                            - by
+                            <a href="https://quantora.uz" class="text-reset fw-semibold footer-mini-logo">
+                                <svg width="33" height="19" viewBox="0 0 33 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M32.5036 10.0153C32.5036 14.9527 28.5041 18.9549 23.5702 18.9549C22.1953 18.9549 20.9482 18.571 19.7849 18.016C19.7376 17.9938 19.691 17.971 19.6444 17.9477L17.208 14.7261L14.427 11.0083C14.5076 10.7407 14.5137 10.3942 14.5162 10.0277C14.531 7.91494 12.8982 5.04527 9.49932 5.04527C6.69706 5.05471 4.42498 7.28696 4.42498 10.0524C4.42498 12.8178 6.69706 15.0599 9.49932 15.0599C10.2577 15.0616 11.007 14.8943 11.6934 14.5699L9.12118 11.0861L13.4111 11.0901L14.1417 12.0743L16.6738 15.4848L17.1733 16.1586L19.0022 18.6214H14.5719L13.9907 17.8024L13.6047 17.9942C13.5707 18.0113 13.536 18.0283 13.5021 18.0443C13.4591 18.0657 13.4158 18.0861 13.3728 18.1057C13.3298 18.1253 13.289 18.1449 13.2464 18.1638C13.1857 18.1919 13.1246 18.2185 13.0629 18.2437C13.0148 18.2641 12.9666 18.2837 12.9185 18.3026C12.9104 18.306 12.9022 18.309 12.8939 18.3116C12.865 18.3236 12.8354 18.3356 12.8058 18.348C12.6721 18.3998 12.5372 18.4482 12.4009 18.4932C12.38 18.5001 12.3587 18.5078 12.3366 18.5147C12.3146 18.5216 12.2835 18.5325 12.2564 18.5394L12.1727 18.5655C12.1691 18.5672 12.1653 18.5684 12.1615 18.5691C12.1048 18.5869 12.0481 18.6029 11.9906 18.6193C11.8346 18.6629 11.6771 18.7028 11.5182 18.7377C11.4655 18.7497 11.4138 18.7606 11.3615 18.7707C11.2412 18.7954 11.1202 18.8176 11.0003 18.8372C10.9324 18.8485 10.8656 18.8586 10.797 18.8677C10.7157 18.879 10.6345 18.8891 10.5525 18.8986C10.5066 18.9037 10.4618 18.9087 10.416 18.912C10.3798 18.9164 10.3437 18.9189 10.3058 18.9225C10.2231 18.9302 10.14 18.9353 10.057 18.9403C9.88264 18.9512 9.70687 18.9566 9.52966 18.9563C4.54055 18.9549 0.496246 14.9527 0.496246 10.0153C0.496246 5.07795 4.54055 1.0769 9.52858 1.0769C9.70555 1.0769 9.88143 1.08199 10.0559 1.09325C11.3616 1.16494 12.6364 1.52023 13.7925 2.13467C14.9487 2.74912 15.9588 3.60814 16.7533 4.65264C17.9273 6.19095 18.563 8.07621 18.5616 10.0153V10.0299C18.5616 10.9477 18.9112 11.7787 19.3562 12.5116C20.1768 13.866 21.7366 15.0058 23.5854 15.0058C26.3606 15.0058 28.6092 12.7779 28.6092 10.0299C28.6092 7.28187 26.3581 4.94502 23.5854 5.05035C21.556 5.12662 20.0702 6.41345 19.2728 7.99593C19.2608 8.0199 19.2449 8.05295 19.2247 8.09472C19.0662 6.26091 18.3178 5.11645 17.3174 4.01595C18.9452 2.29872 21.093 1.0769 23.6446 1.0769C28.5785 1.0769 32.5036 5.07941 32.5036 10.0153Z" fill="#4A5A6B" fill-opacity="0.75"/>
+                                </svg>
+                                Quantora
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+            <!-- end Footer -->
+
+
+            <!-- Modal -->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Удалить категорию</h1>
+                            <button type="button" class="btn-close cancel-remove-category-btn" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Вы правда хотите удалить эту категорию?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light cancel-remove-category-btn" data-bs-dismiss="modal">Отменить</button>
+                            <button type="button" class="btn btn-primary confirm-remove-category-btn" data-bs-dismiss="modal">Удалить</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end Modal -->
+
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Page content -->
+        <!-- ============================================================== -->
+
+    </div>
+    <!-- END wrapper -->
+{% endblock beginPage %}
+
+
+
+
+{% block scripts %}
+<script src="{{ url_for('products.static', filename='JS/scripts.js') }}"></script>
+{% endblock scripts %}

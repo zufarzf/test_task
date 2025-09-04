@@ -1,0 +1,58 @@
+{% extends 'basic.html' %}
+
+
+{% block headTitle %} Выход {% endblock headTitle %}
+
+
+{% block bodyAttr %}
+    class="bg-color"
+{% endblock bodyAttr %}
+
+
+{% block beginPage %}
+	<!-- Begin page -->
+	<div class="container-fluid">
+		<div class="row vh-100">
+			<div class="col-12">
+				<div class="p-0" style="min-height: 100vh;">
+					<div class="row d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+						<div class="col-md-6 col-xl-6 col-lg-6">
+							<div class="row">
+								<div class="col-md-6 mx-auto">
+									<div class="mb-0 border-0">
+
+										<div class="p-0">
+											<div class="text-center">
+												<div class="mb-4">
+													<a href="#" class="auth-logo">
+														<img src="{{ url_for('static', filename='assets/images/logo-dark.png') }}" alt="logo-dark" class="mx-auto" height="28"/>
+													</a>
+												</div>
+											</div>
+										</div>
+
+										<div class="maintenance-img text-center pt-3">
+											<img src="{{ url_for('static', filename='assets/images/svg/logout.svg') }}" height="72" alt="svg-logo">
+										</div>
+										
+										<div class="text-center auth-title-section">
+											<h3 class="text-dark fs-20 fw-medium mb-2">Вы вышли из системы</h3>
+										</div>
+									
+										<div class="text-center d-grid">
+											<a href="{{ url_for('auth.login') }}" class="btn btn-primary mt-3 me-1"> Вход </a>
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<!-- END wrapper -->
+{% endblock beginPage %}

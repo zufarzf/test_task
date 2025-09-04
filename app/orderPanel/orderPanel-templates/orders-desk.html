@@ -1,0 +1,280 @@
+{% extends 'basic.html' %}
+
+
+{% block headTitle %} Список заказов {% endblock headTitle %}
+
+
+{% block bodyAttr %}
+    data-menu-color="dark"
+    data-sidebar="default"
+{% endblock bodyAttr %}
+
+
+{% block beginPage %}
+    <!-- Begin page -->
+    <div id="app-layout">
+        
+        {% include 'topbar-leftMenu.html' %}
+
+
+        <div class="content-page">
+            <div class="content">
+
+                <!-- Start Content-->
+                <div class="container-xxl">
+                    <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
+                        <div class="flex-grow-1">
+                            <h4 class="fs-18 fw-semibold m-0"> Список заказов </h4>
+                        </div>
+                    </div>
+                    
+                    {% if not session['user_data'].get('client_id') %}
+                    <div class="row" style="margin-bottom: 40px;">
+                        <div class="col-xl-6 width-100p">
+                            <div class="card width-100p">
+                                
+                                <div class="card-header d-flex justify-content-between align-items-center" style="gap: 20px;">
+                                    <h5 class="card-title mb-0"> Статистика </h5>
+                                </div>
+                                
+                                <div class="card-body d-flex width-100p">
+                                    <div class="table-responsive width-100p">
+                                        <table class="table table-bordered mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col"> Новые </th>
+                                                    <th scope="col"> Подтверждённые </th>
+                                                    <th scope="col"> Готовятся </th>
+                                                    <th scope="col"> Готовые </th>
+                                                    <th scope="col"> Выполненные </th>
+                                                    <th scope="col"> Отмененные </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td id="total-count-status-new" scope="row"> 0 </td>
+                                                    <td id="total-count-status-confirmed" scope="row"> 0 </td>
+                                                    <td id="total-count-status-preparing" scope="row"> 0 </td>
+                                                    <td id="total-count-status-ready" scope="row"> 0 </td>
+                                                    <td id="total-count-status-completed" scope="row"> 0 </td>
+                                                    <td id="total-count-status-canceled" scope="row"> 0 </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div> <!-- end card-body -->
+
+                            </div> <!-- end card-->
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card btn-panel width-100p">
+                                
+                                <div class="card-body one-filter-input width-100p">
+                                    <div class="d-flex flex-wrap gap-2 width-100p">
+                                        {% if session['user_data'].get('client_id') %}
+                                        <a href="{{ url_for('orderPanel.add_order_product_selection', order_id=0, client_id=0) }}">
+                                            <button type="button" class="btn btn-success"> Создать заказ </button>
+                                        </a>
+                                        {% endif %}
+                                    </div>
+    
+                                    <div class="filter-btn-wrapper">
+                                        <form action="" class="btn-panel-search-form">
+                                            
+                                            <div>
+                                                <input type="text" id="search-input" class="form-control" placeholder="Поиск заказа">
+                                            </div>
+    
+                                        </form>
+                                    </div>
+                                </div> <!-- end card-body -->
+    
+                            </div> <!-- end card-->
+                        </div>
+                    </div>
+
+                    <!-- start row -->
+                    <div id="orders-list" class="items-block row cards-wrapper row row-cols-1 row-cols-md-2 row-cols-xl-4">
+                        
+                        {% for order in orders %}
+                        <!-- order -->
+                        <div class="col-sm-6 col-lg-4 list-item" data-id="{{ order.id }}">
+                            <div class="order-card order-card-yellow card d-block">
+                                <div class="order-card-header card-header title-and-dotBtn-card-header">
+                                    <h5 class=""> {{ order.uniq_number }} </h5>
+                                    
+                                    {% if not session['user_data'].get('client_id') %}
+                                        <div class="dots-btn-wrapper">
+                                            <a href="#" class="dots-btn">
+                                                <svg width="5" height="19" viewBox="0 0 5 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <rect width="5" height="5" rx="2.5" fill="#ffffff"/>
+                                                    <rect y="7" width="5" height="5" rx="2.5" fill="#ffffff"/>
+                                                    <rect y="14" width="5" height="5" rx="2.5" fill="#ffffff"/>
+                                                </svg>
+                                            </a>
+
+                                            <div class="dropdown-menu dropdown-menu-end dots-btn-dropdown" data-popper-placement="bottom-end" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(-15px, 0px);">
+
+                                                <!-- item-->
+                                                <a href="#" data-status="NEW" class="order-status-btn dropdown-item notify-item">
+                                                    <span> Новый </span>
+                                                </a>
+
+                                                <!-- item-->
+                                                <a href="#" data-status="CONFIRMED" class="order-status-btn dropdown-item notify-item">
+                                                    <span> Подтвержден </span>
+                                                </a>
+
+                                                <!-- item-->
+                                                <a href="#" data-status="PREPARING" class="order-status-btn dropdown-item notify-item">
+                                                    <span> Готовится </span>
+                                                </a>
+
+                                                <!-- item-->
+                                                <a href="#" data-status="READY" class="order-status-btn dropdown-item notify-item">
+                                                    <span> Готов </span>
+                                                </a>
+
+                                                <!-- item-->
+                                                <a href="#" data-status="COMPLETED" class="order-status-btn dropdown-item notify-item">
+                                                    <span> Выполнен </span>
+                                                </a>
+
+                                                <!-- item-->
+                                                <a href="#" data-status="CANCELED" class="order-status-btn dropdown-item notify-item">
+                                                    <span> Отменен </span>
+                                                </a>
+
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="card-title-wrapper">
+                                        <h5 class="card-title">Заказчик: {{ order.client_name }}</h5>
+                                    </div>
+                                    
+                                    <div class="product-text-wrapper">
+                                        
+                                        <div class="product-text">
+                                            <span class="product-text-name">Телефон:</span>
+                                            
+                                            <div class="product-text-value-wrapper">
+                                                <div class="product-text-value product-type-text">
+                                                    <a href="tel:+998{{ order.client_phone }}">+998 {{ order.client_phone }}</a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="product-text">
+                                            <span class="product-text-name">Статус:</span>
+                                            
+                                            <div class="product-text-value-wrapper">
+                                                <div class="product-text-value product-type-text order-status">
+                                                    {{ order.status.value }}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="product-text">
+                                            <span class="product-text-name">Время создания:</span>
+                                            
+                                            <div class="product-text-value-wrapper">
+                                                <div class="product-text-value product-type-text">
+                                                    {{ order.create_datetime }}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="product-text">
+                                            <span class="product-text-name">Время изменения:</span>
+                                            
+                                            <div class="product-text-value-wrapper">
+                                                <div class="product-text-value order-update-datetime">
+                                                    {% if order.update_datetime %}
+                                                        {{ order.update_datetime }}
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="product-counts">
+                                        <div class="product-text">
+                                            <span class="product-text-name">Общая сумма:</span>
+                                            
+                                            <div class="product-text-value-wrapper">
+                                                <span class="product-text-value product-count">{{ order.total_price }} сум</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="btns-wrapper-row-end" style="margin-top: 20px;">
+                                        <a href="{{ url_for('orderPanel.order_info', order_id=order.id) }}" class="btn btn-primary">
+                                            Подробнее
+                                        </a>
+                                    </div>
+                                </div><!-- end card-body-->
+                            </div> <!-- end card-->
+                        </div><!-- end col -->
+                        <!-- order -->
+                        {% endfor %}
+
+                    </div>
+
+
+                </div> 
+                <!-- container-fluid -->
+            </div> 
+            <!-- content -->
+
+            <!-- Footer Start -->
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col fs-13 text-muted text-center footer-mini-text">
+                            &copy; <script>document.write(new Date().getFullYear())</script>
+                            - by
+                            <a href="https://quantora.uz" class="text-reset fw-semibold footer-mini-logo">
+                                <svg width="33" height="19" viewBox="0 0 33 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M32.5036 10.0153C32.5036 14.9527 28.5041 18.9549 23.5702 18.9549C22.1953 18.9549 20.9482 18.571 19.7849 18.016C19.7376 17.9938 19.691 17.971 19.6444 17.9477L17.208 14.7261L14.427 11.0083C14.5076 10.7407 14.5137 10.3942 14.5162 10.0277C14.531 7.91494 12.8982 5.04527 9.49932 5.04527C6.69706 5.05471 4.42498 7.28696 4.42498 10.0524C4.42498 12.8178 6.69706 15.0599 9.49932 15.0599C10.2577 15.0616 11.007 14.8943 11.6934 14.5699L9.12118 11.0861L13.4111 11.0901L14.1417 12.0743L16.6738 15.4848L17.1733 16.1586L19.0022 18.6214H14.5719L13.9907 17.8024L13.6047 17.9942C13.5707 18.0113 13.536 18.0283 13.5021 18.0443C13.4591 18.0657 13.4158 18.0861 13.3728 18.1057C13.3298 18.1253 13.289 18.1449 13.2464 18.1638C13.1857 18.1919 13.1246 18.2185 13.0629 18.2437C13.0148 18.2641 12.9666 18.2837 12.9185 18.3026C12.9104 18.306 12.9022 18.309 12.8939 18.3116C12.865 18.3236 12.8354 18.3356 12.8058 18.348C12.6721 18.3998 12.5372 18.4482 12.4009 18.4932C12.38 18.5001 12.3587 18.5078 12.3366 18.5147C12.3146 18.5216 12.2835 18.5325 12.2564 18.5394L12.1727 18.5655C12.1691 18.5672 12.1653 18.5684 12.1615 18.5691C12.1048 18.5869 12.0481 18.6029 11.9906 18.6193C11.8346 18.6629 11.6771 18.7028 11.5182 18.7377C11.4655 18.7497 11.4138 18.7606 11.3615 18.7707C11.2412 18.7954 11.1202 18.8176 11.0003 18.8372C10.9324 18.8485 10.8656 18.8586 10.797 18.8677C10.7157 18.879 10.6345 18.8891 10.5525 18.8986C10.5066 18.9037 10.4618 18.9087 10.416 18.912C10.3798 18.9164 10.3437 18.9189 10.3058 18.9225C10.2231 18.9302 10.14 18.9353 10.057 18.9403C9.88264 18.9512 9.70687 18.9566 9.52966 18.9563C4.54055 18.9549 0.496246 14.9527 0.496246 10.0153C0.496246 5.07795 4.54055 1.0769 9.52858 1.0769C9.70555 1.0769 9.88143 1.08199 10.0559 1.09325C11.3616 1.16494 12.6364 1.52023 13.7925 2.13467C14.9487 2.74912 15.9588 3.60814 16.7533 4.65264C17.9273 6.19095 18.563 8.07621 18.5616 10.0153V10.0299C18.5616 10.9477 18.9112 11.7787 19.3562 12.5116C20.1768 13.866 21.7366 15.0058 23.5854 15.0058C26.3606 15.0058 28.6092 12.7779 28.6092 10.0299C28.6092 7.28187 26.3581 4.94502 23.5854 5.05035C21.556 5.12662 20.0702 6.41345 19.2728 7.99593C19.2608 8.0199 19.2449 8.05295 19.2247 8.09472C19.0662 6.26091 18.3178 5.11645 17.3174 4.01595C18.9452 2.29872 21.093 1.0769 23.6446 1.0769C28.5785 1.0769 32.5036 5.07941 32.5036 10.0153Z" fill="#4A5A6B" fill-opacity="0.75"/>
+                                </svg>
+                                Quantora
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+            <!-- end Footer -->
+
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Page content -->
+        <!-- ============================================================== -->
+
+    </div>
+    <!-- END wrapper -->
+{% endblock beginPage %}
+
+
+
+
+{% block scripts %}
+{% if session['user_data'].get('client_id') %}
+<script>
+    const CLIENT = true;
+</script>
+{% else %}
+<script>
+    const CLIENT = false;
+</script>
+{% endif %}
+<script src="{{ url_for('orderPanel.static', filename='js/orders-desk.js') }}"></script>
+{% endblock scripts %}

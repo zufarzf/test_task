@@ -1,0 +1,78 @@
+{% extends 'basic.html' %}
+
+
+{% block headTitle %} Вход {% endblock headTitle %}
+
+
+{% block bodyAttr %}
+    class="bg-color"
+{% endblock bodyAttr %}
+
+
+{% block beginPage %}
+    <!-- Begin page -->
+    <div class="container-fluid">
+        <div class="row vh-100">
+            <div class="col-12">
+                <div class="p-0 vh-100">
+                    <div class="row d-flex align-items-center justify-content-center vh-100">
+
+                        <div class="col-md-6 col-xl-6 col-lg-6">
+                            <div class="row">
+                                <div class="col-md-6 mx-auto">
+                                    <div class="mb-0 border-0">
+                                        <div class="p-0">
+                                            <div class="text-center">
+                                                <div class="mb-4">
+                                                    <a href="#" class="auth-logo">
+                                                        <img src="{{ url_for('static', filename='assets/images/Quantora-warehose-big.png') }}" alt="logo-dark" class="mx-auto" height="28" />
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+        
+                                        <div class="pt-0">
+                                            <form method="post" action="{{ url_for('auth.authorization') }}" class="my-4">
+                                                {{ form.csrf_token }}
+                                                
+                                                <div class="mb-3">
+                                                    <label for="phone" class="form-label">Телефон</label>
+                                                    
+                                                    <div class="phone-number-input-container">
+                                                        <span class="phone-number-input-span">+998</span>
+                                                        {{ form.phone(class='form-control phone-number-input', placeholder="(__) ___-__-__", id="phone") }}
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="form-group mb-3">
+                                                    <label for="psw" class="form-label">Пароль</label>
+                                                    {{ form.psw(class='form-control', placeholder="Введите пароль", id="password") }}
+                                                </div>
+                                                
+                                                <div class="form-group mb-0 row">
+                                                    <div class="col-12">
+                                                        <div class="d-grid">
+                                                            {{ form.submit(value="Войти", class='btn btn-primary') }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                            <div class="text-center text-muted">
+                                                <p class="mb-0">У вас нет аккаунта ?<a class='text-primary ms-2 fw-medium' href="{{ url_for('auth.registration') }}"> Регистрируйтесь </a></p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <!-- END wrapper -->
+{% endblock beginPage %}

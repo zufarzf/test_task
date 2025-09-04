@@ -1,0 +1,190 @@
+{% extends 'basic.html' %}
+
+
+{% block headTitle %} Создание заказа {% endblock headTitle %}
+
+
+{% block bodyAttr %}
+    data-menu-color="dark"
+    data-sidebar="default"
+{% endblock bodyAttr %}
+
+
+{% block beginPage %}
+    <!-- Begin page -->
+    <div class="content">
+
+        <!-- Start Content-->
+        <div class="container-xxl">
+            
+            <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
+                <div class="flex-grow-1">
+                    <h4 class="fs-18 fw-semibold m-0"> Создание заказа </h4>
+                </div>
+            </div>
+
+
+            <div class="select-columns">
+                
+                <div class="select-col select-col-cads">
+
+                    <div class="row top-panel">
+                        <div class="col-12">
+                            <div class="card">
+                                
+                                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                                    <h5 class="card-title mb-0">Выбор товаров</h5>
+                                    <button type="button" class="btn btn-danger" id="clear-btn">Очистить</button>
+                                </div>
+                                
+                                <div class="top-panel-navigation-btns card-body d-flex width-100p">
+                                    <div class="d-flex flex-wrap gap-2 width-100p">
+                                        <button type="button" class="previous-block-btn btn btn-primary"> Назад </button>
+
+                                        <a class="previous-page-btn" href="{{ url_for('orderPanel.main') }}">
+                                            <button type="button" class="btn btn-primary"> Отменить </button>
+                                        </a>
+                                        <button type="button" class="submit-btn btn btn-success"> Создать заказ </button>
+
+                                        <button type="button" class="next-block-btn btn btn-success"> Далее </button>
+                                    </div>
+
+            
+                                    <div class="filter-btn-wrapper">
+                                        <form action="" class="btn-panel-search-form">
+                                            
+                                            <div>
+                                                <input type="text" id="search-input" class="form-control" placeholder="Поиск товара">
+                                            </div>
+            
+                                        </form>
+                                    </div>
+                                </div> <!-- end card-body -->
+            
+                            </div> <!-- end card-->
+                        </div>
+                    </div>
+        
+                    <!-- start row -->
+                    <div class="select-cads">
+                        
+                        <div class="cards-group">
+                            <div class="card card-body cards-group-block">
+                                <h4 class="card-title card-group-title">Товары</h4>
+        
+                                <a href="#" class="open-arrow-btn">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M6 9L12 15L18 9" stroke="#4A5A6B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </a>
+                            </div>
+                            <div id="products-list" class="items-block cards-wrapper row row-cols-md-2">
+
+                                {% for product in products %}
+                                <div class="col list-item" data-id="{{ product.id }}">
+                                    <a href="#" class="card {% if product.status %}product-card{% endif %}"
+                                        product-id="{{ product.id }}"
+                                        product-name="{{ product.name }}"
+                                        product-category="{{ product.category }}"
+                                        product-price="{{ product.price }}"
+                                    >
+                                        <div class="card-body">
+                                            
+                                            <div class="card-title-wrapper">
+                                                <h5 class="card-title"> {{ product.name }} </h5>
+                                            </div>
+                                            
+                                            <div class="product-text-wrapper">
+                                                
+                                                <div class="product-text">
+                                                    <span class="product-text-name">Категория:</span>
+                                                    
+                                                    <div class="product-text-value-wrapper">
+                                                        <span class="product-text-value product-count"> {{ product.category }} </span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="product-counts">
+                                                <div class="product-text">
+                                                    <span class="product-text-name">Цена:</span>
+                                                    
+                                                    <div class="product-text-value-wrapper">
+                                                        <span class="product-text-value product-count">{{ product.price }} сум</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="product-counts">
+                                                <div class="product-text">
+                                                    <span class="product-text-name">Статус:</span>
+                                                    
+                                                    <div class="product-text-value-wrapper">
+                                                        <span class="product-text-value product-count">
+                                                            <div class="form-check form-switch mb-2 product-status">
+                                                                <input disabled class="form-check-input product-status-input" {% if product.status %}checked{% endif %} type="checkbox" role="switch" id="flexSwitchCheckDefault-{{ product.id }}">
+                                                                <label class="form-check-label product-status-label" for="flexSwitchCheckDefault-{{ product.id }}">
+                                                                    {% if product.status %}
+                                                                        Доступен
+                                                                    {% else %}
+                                                                        Недоступен
+                                                                    {% endif %}
+                                                                </label>
+                                                            </div>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </a>
+                                </div>
+                                {% endfor %}
+                                
+                            </div>
+                        </div>
+        
+                    </div>
+                </div>
+    
+    
+                <div class="select-col select-col-form">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                
+                                <div class="card-header">
+                                    <h6 class="card-title mb-0"> Выбранные товары </h6>
+                                </div>
+
+                                <div class="card-body">
+                                    <form action="{{ url_for('orderPanel.add_order_product_selection_form', order_id=0) }}" class="selected-products" method="post">
+                                        
+                                        {{ form.csrf_token }}
+                                        <!-- SELECTED PRODUCTS -->
+                                        
+                                    </form>
+                                </div>
+    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+            
+        </div>
+        <!-- container-fluid -->
+
+    </div> 
+    <!-- content -->
+{% endblock beginPage %}
+
+
+
+
+{% block scripts %}
+<script src="{{ url_for('orderPanel.static', filename='js/select-product.js') }}"></script>
+{% endblock scripts %}
