@@ -3,6 +3,6 @@
 venv/
 env/
 # instance/
-config.py
+# config.py
 **/__pycache__/
 **/*.pyc
