@@ -17,7 +17,7 @@ def login():
     if User.query.first() is None:
         create_user = User(
             name = 'SuperAdmin',
-            phone = '500070763',
+            phone = '123456789',
             psw = gPswHash('12345'),
         )
         create_staff = Staff(user = create_user)
