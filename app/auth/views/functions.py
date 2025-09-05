@@ -30,7 +30,7 @@ def check_login(func):
         if session.get('user_data'):
             if check_lock_screen():
                 return redirect(url_for('auth.lock_screen'))
-            return redirect(url_for('auth.profile'))
+            return redirect(url_for('orderPanel.main'))
         
         return func(*args, **kwargs)
     return wrapper
