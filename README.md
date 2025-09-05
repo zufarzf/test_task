@@ -13,7 +13,7 @@
 - Просмотр статистики по статусам
 
 ## Технологии
-- Backend: Python (Flask, SQLAlchemy, Socket.IO)
+- Backend: Python (Flask, SQLAlchemy, Flask-Migrate, Socket.IO)
 - Frontend: HTML, CSS, JavaScript (jQuery)
 - DB: SQLite (легко заменить на PostgreSQL/MySQL)
 
@@ -27,9 +27,15 @@ venv\Scripts\activate      # Windows
 
 -Применить миграции и заполнить тестовыми данными
 pip install -r requirements.txt
-
+(Или Копируете эту строку и вставляете в консоль) ->> pip install Flask flask-sqlalchemy flask-migrate flask-wtf flask-moment flask-socketio pymysql flask-ckeditor gevent-websocket cryptography flask_jwt_extended bleach
 
 Применить миграции и заполнить тестовыми данными
+set FLASK_APP=run.py       # Windows
+export FLASK_APP=run.py    # Linux / Mac
+
+после Flask будет видеть файл старта приложения.
+Теперь можно делать миграцию для создания бд таблиц.
+
 flask db init
 flask db migrate
 flask db upgrade
