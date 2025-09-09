@@ -146,5 +146,4 @@ socket.on('client-update-product-status', function(data) {
     
     input.prop("checked", status);
     label.text(status ? 'Доступен' : 'Недоступен')
-    
 });

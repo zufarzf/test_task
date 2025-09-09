@@ -213,3 +213,33 @@ $(document).on('click', '.form-integer-btns-wrapper button', function () {
 	let input = product.find('.count-input-with-btns');
 	input.trigger("click");
 });
+
+
+socket.on('client-update-product-status', function(data) {
+    console.log(data);
+    
+    let status = data.status;
+    let product_id = data.id;
+    
+    let item = $('#products-list').find(`.list-item[ data-id="${product_id}"]`);
+    let card = item.find('.card');
+    let input = $(item).find('.product-status-input');
+    
+    
+    console.log('input', input);
+    
+    let label = $(input).next('.product-status-label');
+    
+    input.prop("checked", status);
+    label.text(status ? 'Доступен' : 'Недоступен')
+
+	if (status) {
+		card.addClass('product-card');
+	} else {
+		card.removeClass('product-card');
+		let selectCard = $('.selected-products').find(`.selected-product[selected-product-id="${ product_id }"]`);
+
+		card.removeClass('selected-card');
+		selectCard.remove();
+	}
+});

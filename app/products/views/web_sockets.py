@@ -8,7 +8,7 @@ from ...dbModels.product import ProductCategory, Product
 
 @socketio.on('remove-product')
 @login_required
-def remove_category(product_id:str=None):
+def remove_product(product_id:str=None):
 	if product_id and product_id.isdigit():
 		product = Product.query.get(int(product_id))
 		
